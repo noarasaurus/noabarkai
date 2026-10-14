@@ -200,9 +200,58 @@ a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
   .about-me { width: calc(100vw - 3rem); font-size: 1.12rem; }
   .about-me .hi { font-size: 1.5rem; }
 }
+
+/* v28 */
+.topbar .wrap{padding-inline-start:3.5rem}
+.burger{position:fixed;z-index:30;top:calc(env(safe-area-inset-top,0px) + .75rem);inset-inline-start:max(1.5rem,calc(50vw - 590px));width:46px;height:46px;border:0;border-radius:50%;background:var(--bg);box-shadow:0 0 0 2px var(--ink);cursor:pointer;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:6px;padding:0}
+.burger span{display:block;width:22px;height:2.5px;background:var(--ink);border-radius:2px;transition:transform .2s,opacity .2s}
+.burger[aria-expanded=true] span:nth-child(1){transform:translateY(8.5px) rotate(45deg)}
+.burger[aria-expanded=true] span:nth-child(2){opacity:0}
+.burger[aria-expanded=true] span:nth-child(3){transform:translateY(-8.5px) rotate(-45deg)}
+.burger:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.menu{position:fixed;inset:0;z-index:20;background:var(--bg);display:none;flex-direction:column;justify-content:center;gap:.4rem;padding:5rem max(1.5rem,calc(50vw - 590px))}
+.menu.open{display:flex}
+.menu a{font-family:var(--serif);font-weight:900;font-size:clamp(2rem,8vw,4rem);line-height:1.2;text-decoration:none;width:fit-content}
+.menu a:hover,.menu a:focus-visible{background:var(--accent)}
+
+.works .meta .kind{display:block;width:fit-content;margin-top:.35rem;padding:.05rem .7rem;border:1.5px solid var(--ink);border-radius:999px;color:var(--ink);font-weight:700;font-size:.92rem}
+.works .meta .kind::before{content:none}
+.works a:hover .meta .kind,.works a:active .meta .kind{border-color:var(--on-accent);color:var(--on-accent)}
+.ava{display:grid;place-items:center;flex:none;width:2.2rem;height:2.2rem;border-radius:50%;overflow:hidden;background:var(--ink);color:var(--bg);font:700 .95rem var(--serif);font-style:normal}
+.ava img{width:100%;height:100%;object-fit:cover;filter:grayscale(1)}
+.works .meta .guest{display:flex;align-items:center;gap:.55rem;margin-top:.45rem;color:var(--ink);font-weight:700}
+.works .meta .guest::before{content:none}
+@media (max-width:720px){
+  .works .meta .kind{display:inline-block;margin-top:0;margin-inline-start:.6rem}
+  .works .meta .guest{margin-top:.5rem}
+}
+
+.works a{position:relative;-webkit-tap-highlight-color:transparent}
+.works a::after{content:attr(data-did);position:absolute;z-index:6;inset-inline-start:1rem;bottom:calc(100% - .6rem);width:min(15rem,70vw);padding:.6rem .8rem;font:400 .95rem/1.4 var(--sans);color:var(--ink);background:color-mix(in srgb,var(--bg) 72%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid color-mix(in srgb,var(--ink) 30%,transparent);border-radius:.5rem;opacity:0;transform:translateY(4px);pointer-events:none;transition:opacity .18s,transform .18s}
+.works a:hover::after,.works a:focus-visible::after{opacity:1;transform:none}
+@media (hover:none){.works a::after{display:none}}
+
+.about-me{font-size:1.7rem;line-height:1.4;transform:none}
+.about-me .shape{shape-margin:5px}
+.about-me .hi{font-size:2.4rem}
+.about-me p{margin:0 0 1rem}
+@media (max-width:720px){.about-me{font-size:1.28rem}.about-me .hi{font-size:1.7rem}}
+.portrait img{cursor:pointer}
+.bubble{position:absolute;top:6%;left:50%;z-index:5;width:max-content;max-width:min(240px,90vw);padding:.6rem .9rem;background:var(--accent);color:var(--on-accent);font:700 1rem/1.3 var(--serif);text-align:center;border-radius:1rem;opacity:0;transform:translate(-50%,6px) scale(.9);pointer-events:none;transition:opacity .2s,transform .2s}
+.bubble.show{opacity:1;transform:translate(-50%,0) scale(1)}
+
+.touch-glow{position:fixed;z-index:40;left:0;top:0;width:64px;height:64px;margin:-32px 0 0 -32px;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--accent) 60%,transparent),transparent 70%);opacity:0;pointer-events:none;transition:opacity .25s}
+.touch-glow.on{opacity:1}
+
+.contact{background:var(--accent)}
+.contact .mail{font-size:clamp(1.25rem,3.4vw,2.2rem);border-bottom-color:var(--ink)}
+.contact .mail:hover,.contact .more a:hover{background:var(--ink);color:var(--accent)}
+.contact .more a{text-decoration-color:var(--ink)}
 </style>
 </head>
 <body>
+<button class="burger" id="burger" type="button" aria-label="תפריט" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
+<nav class="menu" id="menu" aria-label="קטגוריות"><a href="#articles">כתבות שכתבתי</a><a href="#podcast">פודקאסטים</a><a href="#video">ראיונות</a><a href="#social">רעיונות שיצרתי מאפס</a><a href="#contact">דברו איתי</a></nav>
 
 <div class="topbar">
   <div class="wrap">
@@ -228,27 +277,27 @@ a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 <main>
   <section class="group" id="articles">
     <div class="wrap">
-      <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1-4L16 5l3 3L8 19z"/><path d="M14 7l3 3"/></svg>כתבות</h2>
+      <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1-4L16 5l3 3L8 19z"/><path d="M14 7l3 3"/></svg>כתבות שכתבתי</h2>
       <ul class="works">
-        <li><a href="https://www.mako.co.il/tv-avri_and_sherki/articles/Article-a6c405d5d74e991026.htm" target="_blank" rel="noopener">
+        <li><a href="https://www.mako.co.il/tv-avri_and_sherki/articles/Article-a6c405d5d74e991026.htm" target="_blank" rel="noopener" data-did="מה עשיתי כאן">
           <span class="title">&quot;הסתרתי את זה כל עוד יוסף בשבי&quot;: הפרט שנחשף על החטוף ששוחרר</span>
-          <span class="meta"><span>mako, 15.10.2025</span></span>
+          <span class="meta"><span>mako</span></span>
         </a></li>
-        <li><a href="https://www.mako.co.il/tv-interviews_rafireshef/articles/Article-135d1d80b0d5891027.htm" target="_blank" rel="noopener">
+        <li><a href="https://www.mako.co.il/tv-interviews_rafireshef/articles/Article-135d1d80b0d5891027.htm" target="_blank" rel="noopener" data-did="מה עשיתי כאן">
           <span class="title">דן אריאלי: &quot;האש התפוצצה עליי, חשבתי לקפוץ מקומה 3&quot;</span>
-          <span class="meta"><span>mako, 31.07.2025</span></span>
+          <span class="meta"><span>mako</span></span>
         </a></li>
-        <li><a href="https://www.mako.co.il/tv-mkr_israel/vip4-articles/Article-0ca2babf4aee791027.htm" target="_blank" rel="noopener">
+        <li><a href="https://www.mako.co.il/tv-mkr_israel/vip4-articles/Article-0ca2babf4aee791027.htm" target="_blank" rel="noopener" data-did="מה עשיתי כאן">
           <span class="title">על אחותי התאומה ופחד המוות שלי לאבד אותה</span>
-          <span class="meta"><span>mako, 11.07.2025</span><span>טור אישי</span></span>
+          <span class="meta"><span>mako</span><span class="kind">טור אישי</span></span>
         </a></li>
-        <li><a href="https://www.mako.co.il/tv-married-at-first-sight/season7-articles/Article-ff20a10f1722591026.htm" target="_blank" rel="noopener">
+        <li><a href="https://www.mako.co.il/tv-married-at-first-sight/season7-articles/Article-ff20a10f1722591026.htm" target="_blank" rel="noopener" data-did="מה עשיתי כאן">
           <span class="title">השיחה של חיה ומור הציפה ויכוח עתיק - שאולי עדיף שנשאיר בעבר</span>
-          <span class="meta"><span>mako, 21.02.2025</span><span>כתבת דעה</span></span>
+          <span class="meta"><span>mako</span><span class="kind">כתבת דעה</span></span>
         </a></li>
-        <li><a href="https://www.mako.co.il/tv-baby_boom/season1-articles/Article-2c5f1469c2ad291026.htm" target="_blank" rel="noopener">
+        <li><a href="https://www.mako.co.il/tv-baby_boom/season1-articles/Article-2c5f1469c2ad291026.htm" target="_blank" rel="noopener" data-did="מה עשיתי כאן">
           <span class="title">&quot;מצאתי את עצמי יושבת שבעה עם תינוק בן יומו&quot;</span>
-          <span class="meta"><span>mako, 07.11.2024</span><span>כתבה</span></span>
+          <span class="meta"><span>mako</span><span class="kind">כתבה</span></span>
         </a></li>
       </ul>
     </div>
@@ -258,13 +307,13 @@ a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
     <div class="wrap">
       <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>פודקאסטים</h2>
       <ul class="works">
-        <li><a href="https://open.spotify.com/show/5grw4GrAaDDScTjROphTdB" target="_blank" rel="noopener">
+        <li><a href="https://open.spotify.com/show/5grw4GrAaDDScTjROphTdB" target="_blank" rel="noopener" data-did="מה עשיתי כאן">
           <span class="title">StandUp4Israel עם שחר חסון ויוחאי ספונדר</span>
-          <span class="meta"><span>גלצ, Spotify</span></span>
+          <span class="meta"><span>גלצ, Spotify</span><span class="guest"><i class="ava">ש</i>שחר חסון</span></span>
         </a></li>
-        <li><a href="https://open.spotify.com/show/1UI3ED1Q2chhz0OCtuRF1J" target="_blank" rel="noopener">
+        <li><a href="https://open.spotify.com/show/1UI3ED1Q2chhz0OCtuRF1J" target="_blank" rel="noopener" data-did="מה עשיתי כאן">
           <span class="title">פודכספי</span>
-          <span class="meta"><span>Spotify, 2023</span></span>
+          <span class="meta"><span>Spotify</span><span class="guest"><i class="ava">מ</i>מתי כספי</span></span>
         </a></li>
       </ul>
     </div>
@@ -272,13 +321,13 @@ a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 
   <section class="group" id="video">
     <div class="wrap">
-      <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 9l6 3-6 3z"/></svg>וידאו</h2>
+      <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 9l6 3-6 3z"/></svg>ראיונות</h2>
       <ul class="works">
-        <li><a href="https://www.mako.co.il/mako-vod-keshet/masterchef-dream_team_2/specials/VOD-525f1581927df91026.htm" target="_blank" rel="noopener">
+        <li><a href="https://www.mako.co.il/mako-vod-keshet/masterchef-dream_team_2/specials/VOD-525f1581927df91026.htm" target="_blank" rel="noopener" data-did="מה עשיתי כאן">
           <span class="title">ראיונות עם מתמודדי העבר של מאסטר שף</span>
           <span class="meta"><span>12+, מאסטר שף נבחרת החלומות 2</span></span>
         </a></li>
-        <li><a href="https://www.youtube.com/watch?v=OsJBtnTs0rk" target="_blank" rel="noopener">
+        <li><a href="https://www.youtube.com/watch?v=OsJBtnTs0rk" target="_blank" rel="noopener" data-did="מה עשיתי כאן">
           <span class="title">סרטון ביוטיוב</span>
           <span class="meta"><span>YouTube</span><span>הפקה, תחקיר וראיון</span></span>
         </a></li>
@@ -288,13 +337,13 @@ a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 
   <section class="group" id="social">
     <div class="wrap">
-      <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v10H9l-5 4z"/></svg>רשתות חברתיות</h2>
+      <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v10H9l-5 4z"/></svg>רעיונות שיצרתי מאפס</h2>
       <ul class="works">
-        <li><a href="https://www.instagram.com/reel/Cr_ddXEIo6X/" target="_blank" rel="noopener">
+        <li><a href="https://www.instagram.com/reel/Cr_ddXEIo6X/" target="_blank" rel="noopener" data-did="מה עשיתי כאן">
           <span class="title">סרטון לזכר יעל גרימברג</span>
           <span class="meta"><span>Instagram, רילס</span></span>
         </a></li>
-        <li><a href="https://www.instagram.com/p/CrJLOTyoCBR/" target="_blank" rel="noopener">
+        <li><a href="https://www.instagram.com/p/CrJLOTyoCBR/" target="_blank" rel="noopener" data-did="מה עשיתי כאן">
           <span class="title">קומיקס על סיפורה של שורדת שואה</span>
           <span class="meta"><span>Instagram</span></span>
         </a></li>
@@ -305,8 +354,9 @@ a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 
 <footer class="contact" id="contact">
   <div class="wrap">
-    <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>יצירת קשר</h2>
+    <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>דברו איתי</h2>
     <a class="mail" href="mailto:nbnoanb3@gmail.com">nbnoanb3@gmail.com</a>
+    <p class="more"><a href="tel:0585857888"><bdi>058-585-7888</bdi></a> &nbsp;·&nbsp; <a href="https://www.linkedin.com/in/noa-barkai-30004a19b/" target="_blank" rel="noopener">LinkedIn</a></p>
   </div>
 </footer>
 
@@ -555,8 +605,11 @@ a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
           requestAnimationFrame(fly);
         }
         dot.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') hopAway(); });
-        dot.addEventListener('pointerdown', function (e) { if (e.pointerType !== 'mouse') hopAway(); });
-        window.addEventListener('resize', function () { cx = 0; cy = 0; dot.style.translate = 'none'; });
+        var pt = 'mouse';
+        dot.addEventListener('pointerdown', function (e) { pt = e.pointerType; });
+        dot.addEventListener('click', function () { if (pt !== 'mouse') hopAway(); });
+        var lw = window.innerWidth;
+        window.addEventListener('resize', function () { if (window.innerWidth === lw) return; lw = window.innerWidth; cx = 0; cy = 0; dot.style.translate = 'none'; });
       }
 
       var t0 = null;
@@ -581,6 +634,29 @@ a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
   var wait = Math.max(0, 700 - performance.now());
   var ready = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
   ready.then(function () { updatePivot(); setTimeout(run, wait); });
+})();
+</script>
+<script>
+(function(){
+  var b=document.getElementById('burger'),m=document.getElementById('menu');
+  function set(o){m.classList.toggle('open',o);b.setAttribute('aria-expanded',o?'true':'false');document.body.style.overflow=o?'hidden':'';}
+  b.addEventListener('click',function(){set(!m.classList.contains('open'));});
+  m.addEventListener('click',function(e){if(e.target.tagName==='A')set(false);});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')set(false);});
+
+  var p=document.querySelector('.portrait'),img=p&&p.querySelector('img');
+  if(img){
+    var bub=document.createElement('div');bub.className='bubble';bub.setAttribute('role','status');
+    bub.textContent='המאכל האהוב עליי זה כבד טחון';p.appendChild(bub);
+    var tm;
+    img.addEventListener('click',function(){bub.classList.add('show');clearTimeout(tm);tm=setTimeout(function(){bub.classList.remove('show');},3200);});
+  }
+
+  var g=document.createElement('div');g.className='touch-glow';document.body.appendChild(g);
+  function mv(e){var t=e.touches[0];if(t)g.style.transform='translate3d('+t.clientX+'px,'+t.clientY+'px,0)';}
+  document.addEventListener('touchstart',function(e){mv(e);g.classList.add('on');},{passive:true});
+  document.addEventListener('touchmove',mv,{passive:true});
+  ['touchend','touchcancel'].forEach(function(n){document.addEventListener(n,function(){g.classList.remove('on');},{passive:true});});
 })();
 </script>
 </body>
