@@ -657,6 +657,9 @@ html[lang=km] .about-me .intro{font-size:1.05rem;line-height:1.7;letter-spacing:
   .topbar .who,.topbar .role{padding-top:.35rem;line-height:1.25}
 }
 .tools{gap:.45rem}
+/* v57: the dictionary card stays under the menu */
+.headbox .toast{z-index:5}
+body:has(.menu.open) .headbox .toast,body:has(.menu.closing) .headbox .toast{visibility:hidden}
 </style>
 </head>
 <body>
