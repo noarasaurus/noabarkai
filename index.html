@@ -773,6 +773,7 @@ body.worse .shot{border:2px dashed #7a00ff}
 .svh-probe{position:fixed;top:0;left:0;width:0;height:100svh;pointer-events:none;visibility:hidden}
 @media (max-width:720px){.worked-logos img,.worked-logos img[alt="וואלה"],.worked-logos img[alt="Walla"]{height:42px;width:42px}.worked-logos{gap:.5rem}}
 .worked-logos{flex-direction:column-reverse}
+body.worse .worked{display:none}
 </style>
 </head>
 <body>
@@ -1551,9 +1552,13 @@ body.worse .shot{border:2px dashed #7a00ff}
     // the smallest visible height: with the phone's address bar and toolbar showing
     var vh=Math.min(window.innerHeight, probe.offsetHeight||window.innerHeight, window.visualViewport?window.visualViewport.height:1e9);
     var heroTop=hero.getBoundingClientRect().top+window.scrollY;
-    var top=Math.min(hero.offsetHeight, vh-heroTop) - w.offsetHeight - 28;
+    var base=Math.min(hero.offsetHeight, vh-heroTop) - w.offsetHeight - 28;          // where they sit when the site opens
+    var floor=hero.offsetHeight - w.offsetHeight - 14;                                // just above 'ideas I created'
+    var top=Math.min(Math.max(base + window.scrollY, base), floor);                   // they ride down with the scroll, and back up
     w.style.bottom='auto'; w.style.top=Math.max(top,0)+'px';
   }
+  var ticking=false;
+  window.addEventListener('scroll',function(){ if(!ticking){ ticking=true; requestAnimationFrame(function(){ ticking=false; place(); }); } },{passive:true});
   window.addEventListener('resize',place); window.addEventListener('orientationchange',place);
   if(document.fonts&&document.fonts.ready) document.fonts.ready.then(place);
   place();
