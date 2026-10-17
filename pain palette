@@ -4,8 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#DDD6E3">
-<meta name="description" content="יומן גומי – יומן כאב רגוע: מסמנים על דמות איפה כואב, ומקבלים היסטוריה, תובנות ומרכז עזרה.">
-<title>יומן גומי</title>
+<meta name="description" content="Pain Palette — give pain a color. יומן כאב רגוע: מסמנים על דמות איפה כואב, ורואים היסטוריה, תובנות ומרכז עזרה.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 36'%3E%3Cpath d='M22 4C11 4 4 11 4 18.6c0 7 6 13.4 14 13.4 3 0 4-1.5 4-3.2 0-1.6-1.2-2.4-1.2-3.9 0-1.8 1.5-2.9 3.3-2.9h4.2c6.6 0 11.7-3.4 11.7-8.9C40 7.6 32 4 22 4z' fill='%23F4EFF3' stroke='%232E2A25' stroke-width='2'/%3E%3Ccircle cx='14' cy='25' r='2.6' fill='none' stroke='%232E2A25' stroke-width='1.4'/%3E%3Ccircle cx='13' cy='16' r='3' fill='%23D9806F'/%3E%3Ccircle cx='20' cy='10.5' r='3' fill='%237FA88C'/%3E%3Ccircle cx='29' cy='11' r='3' fill='%238FA6D6'/%3E%3C/svg%3E">
+<title>Pain Palette</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500&display=swap">
@@ -600,6 +601,16 @@ svg.big{width:100%;height:min(40vh,340px);display:block;overflow:visible}
 .medinline{display:flex;flex-direction:column;gap:8px;padding:8px 10px 10px;border-radius:16px;background:rgba(255,255,255,.4);animation:fadeIn .25s}
 .medinline input{font:inherit;padding:9px 12px;border-radius:12px;border:1px solid rgba(42,38,50,.14);background:#fff}
 .medinline .btn{align-self:flex-start}
+
+/* ===== brand ===== */
+.brand{display:flex;align-items:center;gap:8px;flex:none;direction:ltr}
+.brand-pal{width:34px;height:28px}
+.brand-t{display:flex;flex-direction:column;line-height:1.05}
+.brand-t b{font-size:15px;font-weight:400;letter-spacing:.02em;color:var(--ink)}
+.brand-t small{font-size:10.5px;color:var(--ink-3);letter-spacing:.03em}
+.top{gap:12px}
+.top .instr{text-align:left;font-size:17px}
+@media (max-width:820px){.brand-pal{width:30px;height:25px}.brand-t b{font-size:14px}.brand-t small{font-size:10px}.top .instr{font-size:15px}}
 @media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -638,7 +649,12 @@ svg.big{width:100%;height:min(40vh,340px);display:block;overflow:visible}
 
 <div dir="rtl" lang="he" class="app" id="app" data-view="today">
   <aside class="stage" id="stage">
-    <div class="top"><p class="instr" id="instr">לחצי על המקום שכואב</p><div class="logo">יומן גומי</div></div>
+    <div class="top"><div class="brand" dir="ltr" aria-label="Pain Palette — give pain a color"><svg class="brand-pal" viewBox="0 0 44 36" aria-hidden="true"><g fill="none" stroke="#2E2A25" stroke-linecap="round" stroke-linejoin="round" filter="url(#pencilSm)">
+      <path d="M22 4C11 4 4 11 4 18.6c0 7 6 13.4 14 13.4 3 0 4-1.5 4-3.2 0-1.6-1.2-2.4-1.2-3.9 0-1.8 1.5-2.9 3.3-2.9h4.2c6.6 0 11.7-3.4 11.7-8.9C40 7.6 32 4 22 4z" stroke-width="1.3" opacity=".85"/>
+      <path d="M21.6 4.6C11.8 5 5 11.4 5.2 18.4" stroke-width=".8" opacity=".45"/>
+      <circle cx="14" cy="25" r="2.6" stroke-width="1" opacity=".75"/></g>
+      <circle cx="13" cy="16" r="2.7" fill="#D9806F" opacity=".55"/><circle cx="20" cy="10.5" r="2.6" fill="#7FA88C" opacity=".55"/><circle cx="29" cy="11" r="2.6" fill="#8FA6D6" opacity=".55"/></svg>
+      <span class="brand-t"><b>Pain Palette</b><small>give pain a color</small></span></div><p class="instr" id="instr">לחצי על המקום שכואב</p></div>
     <div class="sheet" id="sheet">
       <div id="figWrap"><svg id="fig" viewBox="6 18 292 440" preserveAspectRatio="xMidYMid meet" direction="ltr" aria-label="דמות מצוירת. נגיעה מסמנת כאב">
         <g id="breathe"><g id="flip">
@@ -1507,7 +1523,7 @@ $("#exportBtn").addEventListener("click",async()=>{
   if(!downloads||!entries.length){toast("אין עדיין מה לשמור.");return;}
   const q=v=>'"'+String(v??"").replace(/"/g,'""')+'"';
   const rows=[["תאריך","שעה","מקום","עוצמה","צבע","צורה","מרקם","קול","הערה"]].concat(entries.slice().sort((a,b)=>a.ts-b.ts).map(e=>[dayKey(e.ts),timeStr(e.ts),regionName(e.region),e.intensity,colorName(e.color),label(SHAPES,e.shape),(e.textures||[]).join(" / "),label(SOUNDS,e.sound),e.note||""]));
-  try{const r=await downloads.save({filename:"yoman-gumi-"+todayKey()+".csv",data:new Blob(["﻿"+rows.map(r=>r.map(q).join(",")).join("\n")],{type:"text/csv"})});if(r&&r.status==="saved")toast("הקובץ נשמר");}
+  try{const r=await downloads.save({filename:"pain-palette-"+todayKey()+".csv",data:new Blob(["﻿"+rows.map(r=>r.map(q).join(",")).join("\n")],{type:"text/csv"})});if(r&&r.status==="saved")toast("הקובץ נשמר");}
   catch(e){if(e&&e.code==="unavailable")$("#exportBtn").hidden=true;}
 });
 
@@ -1952,7 +1968,7 @@ function reportHTML(){
   const meds=loadMeds().filter(m=>m.ts>=since);
   if(meds.length)h+=`<h3 class="rp-h">משככי כאבים · ${meds.length} פעמים</h3><ul class="rp-notes">${meds.map(m=>`<li><b>${new Date(m.ts).toLocaleDateString("he-IL",{day:"numeric",month:"numeric"})} ${timeStr(m.ts)}</b> ${esc(m.name||"משכך")}</li>`).join("")}</ul>`;
   if(notes.length)h+=`<h3 class="rp-h">במילים שלי</h3><ul class="rp-notes">${notes.map(e=>`<li><b>${kDate(dayKey(e.ts)).toLocaleDateString("he-IL",{day:"numeric",month:"numeric"})} · ${esc(regionName(e.region))} · ${e.intensity}</b> ${esc(e.note)}</li>`).join("")}</ul>`;
-  h+=`<div class="rp-foot">נוצר ביומן גומי · ${to}. עוצמה בסולם 1–10 כפי שדווחה.</div>`;
+  h+=`<div class="rp-foot">נוצר ב־Pain Palette · ${to}. עוצמה בסולם 1–10 כפי שדווחה.</div>`;
   return h;
 }
 function renderReport(){
