@@ -1568,5 +1568,28 @@ body.worse .worked{display:none}
   if(document.fonts&&document.fonts.ready) document.fonts.ready.then(place);
   place();
 })();
+</script>
+<script>
+/* Ideas strip: always open on the first card (right edge in Hebrew/RTL) */
+(function(){
+  var strip=document.querySelector('.strip'); if(!strip) return;
+  var touched=false;
+  ['pointerdown','touchstart','wheel','keydown'].forEach(function(ev){
+    strip.addEventListener(ev,function(){ touched=true; },{passive:true,once:true});
+  });
+  function toStart(){
+    if(touched) return;
+    var first=strip.querySelector('.card'); if(!first) return;
+    var cs=getComputedStyle(strip), sr=strip.getBoundingClientRect(), fr=first.getBoundingClientRect();
+    if(cs.direction==='rtl'){
+      strip.scrollLeft += fr.right-(sr.right-parseFloat(cs.paddingRight||0));
+    }else{
+      strip.scrollLeft += fr.left-(sr.left+parseFloat(cs.paddingLeft||0));
+    }
+  }
+  toStart();
+  document.addEventListener('DOMContentLoaded',toStart);
+  window.addEventListener('load',function(){ toStart(); setTimeout(toStart,300); });
+})();
 </script></body>
 </html>
